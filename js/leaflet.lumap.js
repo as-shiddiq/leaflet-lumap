@@ -23,6 +23,7 @@
         lm.init = function()
         {
             _idAside  = `lumap-${lm.makeId(5)}`;
+            _el.classList.add('lumap-container');
             _el.innerHTML = lm.generate();
             lm.onchange();
             lm.onchangeParent();

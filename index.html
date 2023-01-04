@@ -14,20 +14,28 @@
 
 	<style type="text/css">
 		@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
-		html{
-			width: 100%;
-			overflow-x: hidden;
+		body{
+			background-image: url('images/background.svg');
+			background-size: cover;
+			height: 100vh;
 		}
-		#map { height: 100vh;width:100wh}
+		.container{
+			height: 800px;
+			background: #fff;
+			overflow: hidden;
+			border-radius: 10px;
+			box-shadow: 5px 5px 5px 5px #0002;
+		}
+		#map { height: 800px;width:100wh}
 	</style>
 </head>
-<body>
-<div class="container-fluid p-0">
+<body class="d-flex align-items-center">
+<div class="container">
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-3 p-0">
 		<div id="lumap"></div>
 	</div>
-	<div class="col-md-9">
+	<div class="col-md-9 p-0">
 		<div id="map"></div>
 	</div>
 </div>
@@ -40,24 +48,26 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/leaflet.lumap.js"></script>
 <script type="text/javascript">
+	// decsribe list geojson 
 	let geojson = {
-		"Bajuin":"#5589c0",
-		"Bati_Bati":"#4f85bd", 
-		"Batu_Ampar":"#4980bb", 
-		"Bumi_Makmur":"#447cb8",
-		"Jorong":"#4278b2",
-		"Kintap":"#3f74ac",
-		"Kurau":"#3d70a6",
-		"Panyipatan":"#3b6ca0",
-		"Pelaihari":"#2c5077",
-		"Takisung":"#294c71",
-		"Tambang_Ulang":"#27486b"
+		"Bajuin":"#D81159",
+		"Bati_Bati":"#379392", 
+		"Batu_Ampar":"#4FB0C6", 
+		"Bumi_Makmur":"#4F86C6",
+		"Jorong":"#744FC6",
+		"Kintap":"#8F2D56",
+		"Kurau":"#FACFAD",
+		"Panyipatan":"#F8BD7F",
+		"Pelaihari":"#F5AC72",
+		"Takisung":"#F2AA7E",
+		"Tambang_Ulang":"#AF125A"
 	};
-	let map = L.map('map').setView([-3.824181, 114.8191513], 10);
+	let map = L.map('map').setView([-3.824181, 114.9191513], 10);
 
+	// describe basemap variabel
 	let mapboxD =  L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 							attribution: 'Map data &copy; <a href=\\\"https://www.openstreetmap.org/\\\">OpenStreetMap</a> contributors,<a href=\\\"https://creativecommons.org/licenses/by-sa/2.0/\\\">CC-BY-SA</a>,Imagery © <a href=\\\"https://www.mapbox.com/\\\">Mapbox</a>',
-						}).addTo(map);
+						});
 	let mapboxL =  L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 							attribution: 'Map data &copy; <a href=\\\"https://www.openstreetmap.org/\\\">OpenStreetMap</a> contributors,<a href=\\\"https://creativecommons.org/licenses/by-sa/2.0/\\\">CC-BY-SA</a>,Imagery © <a href=\\\"https://www.mapbox.com/\\\">Mapbox</a>',
 						});
@@ -65,7 +75,9 @@
 	    maxZoom: 19,
 	    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	});
+	// describe basemap variabel
 
+	mapboxL.addTo(map);
 
 	let baseMaps = {
 			id:'basemap',
@@ -73,14 +85,14 @@
 			type : 'single',
 			child : [
 				{
-					title : 'Mapbox Dark',
-					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
-				    layer : mapboxD
-				},
-				{
 					title : 'Mapbox Light',
 					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
 				    layer : mapboxL
+				},
+				{
+					title : 'Mapbox Dark',
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
+				    layer : mapboxD
 				},
 				{
 					title : "OpenStreetMap",
@@ -91,6 +103,7 @@
 		}
 	let overlayLayers = [];
 	let overlayMaps;
+	let overlayMaps2;
 	let getGeojson = async () => {
 		for(i in geojson)
 		{
@@ -104,7 +117,7 @@
 				style : {
 					color: color,
 				    weight:1,
-				    fillOpacity:0.4,
+				    fillOpacity:1,
 				    dashArray:1
 				}
 			}).addTo(map);
@@ -117,7 +130,12 @@
 		}
 		overlayMaps = {
 			id:'layers',
-			title : 'Layers',
+			title : 'District',
+			child : overlayLayers
+		};
+		overlayMaps2 = {
+			id:'layers2',
+			title : 'Administration',
 			child : overlayLayers
 		};
 	}
@@ -125,7 +143,7 @@
 	
 	getGeojson().then(()=>{
 		let elLumap = document.querySelector('#lumap');
-		let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps]);
+		let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps,overlayMaps2]);
 	});
 
 </script>
