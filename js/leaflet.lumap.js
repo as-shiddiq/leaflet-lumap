@@ -36,7 +36,7 @@
             _generated = true;
         }
 
-        lm.eachLayers = function(v,k,m)
+        lm.eachLayersRemove = function(v,k,m)
         {
             if(v.group.id==_layersGroup)
             {
@@ -58,7 +58,7 @@
                         if(_getLayer.group.type=='single')
                         {
                             _layersGroup = _getLayer.group.id;
-                            _layers.forEach(lm.eachLayers);
+                            _layers.forEach(lm.eachLayersRemove);
                         }
                         if(_chckd)
                         {
@@ -96,6 +96,11 @@
                 let _c = _d.child[_i];
                 lm.genLayers(_setIdChild,_c.layer,_d);
                 let _setType = 'checkbox';
+                let _checked = '';
+                if(_map.hasLayer(_c.layer))
+                {
+                    _checked = 'checked';
+                }
                 if(_d.type=='single')
                 {
                     _setType = 'radio';
@@ -107,7 +112,7 @@
                                 ${_c.title}
                               </label>
                             </div>
-                          <input class="form-check-input lm-click-layer" name="${_setId}" type="${_setType}" value="${_setIdChild}" id="${_setIdChild}">
+                          <input class="form-check-input lm-click-layer" name="${_setId}" ${_checked} type="${_setType}" value="${_setIdChild}" id="${_setIdChild}">
                         </div>`;
 
             }
