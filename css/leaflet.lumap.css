@@ -1,10 +1,14 @@
+/*
+original created by Nasrullah Siddik
+https://github.com/as-shiddiq/leaflet-lumap
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 .lumap-container{
-  height: 800px;
   overflow-y: auto;
 }
 .lumap-container::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* Track */
@@ -31,7 +35,7 @@
 }
 
 .lumap-aside .accordion-header{
-  padding: 1rem 0;
+  padding: .5rem 0;
 }
 
 .lumap-aside .accordion-header > button{
@@ -106,4 +110,63 @@
   object-fit: cover !important;
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.lm-toggle-minimize{
+  display: none;
+}
+
+.lumap-mini.lumap-container{
+    height: 100vh !important;
+    width: 100%;
+    position: fixed;
+    z-index: 10000;
+    position: fixed;
+    bottom: 0px;
+    border-radius: 10px;
+}
+
+.lumap-mini.hide .lumap-aside{
+  display: none;
+}
+
+.lumap-mini .lumap-aside{
+  animation: zoomIn .1s ease-in;
+  height: auto;
+  border:1px solid #eee;
+  box-shadow: 0 0 10px 20px #0002;
+  margin: 20px;
+}
+
+.lumap-mini .lm-toggle-minimize{
+  position: fixed;
+  display: block;
+  box-shadow: 0px 0px 10px 5px #0002;
+  background: #57ce00;
+  right: 10px;
+  bottom: 10px;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  z-index: 10001;
+  color: #fff;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0, 0);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes zoomOut {
+  0% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(0, 0);
+  }
 }

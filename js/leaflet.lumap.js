@@ -1,3 +1,7 @@
+/*
+original created by Nasrullah Siddik
+https://github.com/as-shiddiq/leaflet-lumap
+*/
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -12,12 +16,17 @@
         let _layers = new Map();
         let _generated = false;
         let _layersGroup = '';
+        let _first = true;
 
         this.reinit = function() 
         {
             _generated = false;
             _el.innerHTML = '';
             lm.init();
+        }
+
+        onresize = (event) => {
+            lm.responsive();
         }
 
         lm.init = function()
@@ -27,13 +36,40 @@
             _el.innerHTML = lm.generate();
             lm.onchange();
             lm.onchangeParent();
+            lm.responsive();
             _generated = true;
         }   
+
+        lm.responsive = function()
+        {
+            let _height = _el.parentNode.offsetHeight;
+            _el.style.height = _height+'px';
+
+            if(window.screen.width<=768)
+            {
+               _el.classList.add('lumap-mini');
+            }
+            else
+            {
+               _el.classList.remove('lumap-mini');
+            }
+
+            let _elLmToggleMinimize = _el.querySelector('.lm-toggle-minimize');
+            if(_elLmToggleMinimize.classList.contains('show'))
+            {
+                _el.classList.remove('hide');
+            }
+            else
+            {
+                _el.classList.add('hide');
+            }
+        }
 
         lm.generate = function() 
         {
             let _i;
-            _html =`<div class="accordion lumap-aside" id="${_idAside}">`;
+            _html =`<button class="btn-default btn-icon btn lm-toggle-minimize">    <span class="bi bi-layers-fill"></button>`;
+            _html +=`<div class="accordion lumap-aside" id="${_idAside}">`;
             if(_el==null)
             {
                 console.error('Selector is null')
@@ -57,8 +93,28 @@
 
         lm.onchange = function()
         {
+            let _elLmToggleMinimize = _el.querySelector('.lm-toggle-minimize');
+            _elLmToggleMinimize.addEventListener('click',()=>{
+                _elLmToggleMinimize.classList.toggle('show');
+                if(_elLmToggleMinimize.classList.contains('show'))
+                {
+                    _el.classList.remove('hide');
+                    _elLmToggleMinimize.innerHTML = `<span class="bi bi-x-lg"></span>`
+                }
+                else
+                {
+                    _el.classList.add('hide');
+                    _elLmToggleMinimize.innerHTML = `<span class="bi bi-layers-fill"></span>`
+                }
+            });
             if(!_generated)
             {
+
+                // if(_elLmToggleMinimize.classList.includes('show'))
+                // {
+                //     _el.classList.add('hide');
+                // }
+
                 let _els = _el.querySelectorAll('.lm-click-layer');
                 for(let _elChange of _els)
                 {
@@ -133,14 +189,29 @@
             let _h = ``;
             let _setId = `${_d.id}`;
             let _setTitle = _d.title;
+            let _type = _d.type;
+            let _show = '';
+            let _collapsed = 'collapsed';
+            let _parentCheckBox = `<input class="form-check-input lm-click-parent" type="checkbox" value="${_setId}">`;
+            if(_first)
+            {
+                _show = 'show';
+                _collapsed = '';
+                _first = false;
+            }
+            if(_type=='single')
+            {
+                _parentCheckBox = ``;
+            }
+
              _h += `<div class="accordion-item">
                     <h2 class="accordion-header d-flex gap-2 align-items-center" id="headingOne">
-                        <input class="form-check-input lm-click-parent" type="checkbox" value="${_setId}">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#header-${_setId}" aria-expanded="true" aria-controls="collapseOne">
+                        ${_parentCheckBox}
+                      <button class="accordion-button ${_collapsed}" type="button" data-bs-toggle="collapse" data-bs-target="#header-${_setId}" aria-expanded="true" aria-controls="collapseOne">
                         ${_setTitle}
                      </button>
                     </h2>
-                    <div id="header-${_setId}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#${_idAside}">
+                    <div id="header-${_setId}" class="accordion-collapse collapse ${_show}" aria-labelledby="headingOne">
                       <div class="accordion-body">`;
             let _i;
             let _c = 0;
@@ -156,7 +227,7 @@
                 {
                     _checked = 'checked';
                 }
-                if(_d.type=='single')
+                if(_type=='single')
                 {
                     _setType = 'radio';
                 }
