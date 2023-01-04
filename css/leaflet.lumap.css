@@ -3,10 +3,12 @@
   font-family: 'Inter', sans-serif;
   padding: 1rem;
 }
+
 .lumap-aside .accordion-header{
   background: transparent;
   padding: 1rem 0;
 }
+
 .lumap-aside .accordion-header > button{
   font-weight: bolder;
   font-size: 1rem;
@@ -14,6 +16,7 @@
   margin: 0;
   color: #444;
 }
+
 .lumap-aside .form-check-input[type="checkbox"]{
   height: 1rem;
   width: 1rem;
@@ -21,33 +24,45 @@
   border-radius: .25rem;
   padding: 0;
 }
+
 .lumap-aside .accordion-button::after
 {
   width: 1rem;
   background-size:1rem;
   height: 1rem;
 }
+
 .lumap-aside .accordion-button:not(.collapsed)
 {
   color: #0c63e4;
   box-shadow: none;
 }
+
 .lumap-aside .accordion-item{
   border: 0;
 }
+
 .lumap-aside .accordion-button:focus{
   box-shadow: none;
 }
+
 .lumap-aside .accordion-button:not(.collapsed)
 {
   background: inherit;
 }
+
 .lumap-aside .accordion-body{
   padding: 0;
 }
+
 .lumap-aside .accordion-body .form-check{
   padding: 0 !important;
 }
+
+.lumap-aside .accordion-body .form-check .form-check-label:hover{
+  cursor: pointer;
+}
+
 .lumap-aside .accordion-body .lm-icon{
   width: 1.5rem;
   height: 1.5rem;
@@ -56,10 +71,12 @@
   background: #777;
   color: #fff;
 }
+
 .lumap-aside .accordion-body .lm-icon-image
 {
   background: transparent;
 }
+
 .lumap-aside .accordion-body .lm-icon img{
   object-fit: cover !important;
   width: 1.5rem;

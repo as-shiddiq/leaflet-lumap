@@ -9,16 +9,30 @@
         let lm = this;
         let _html =``;
         let _idAside;
-        let _elClick;
         let _layers = new Map();
         let _generated = false;
         let _layersGroup = '';
 
+        this.reinit = function() 
+        {
+            _generated = false;
+            _el.innerHTML = '';
+            lm.init();
+        }
+
         lm.init = function()
         {
-            let _i;
             _idAside  = `lumap-${lm.makeId(5)}`;
-            _html +=`<div class="accordion lumap-aside" id="${_idAside}">`;
+            _el.innerHTML = lm.generate();
+            lm.onchange();
+            lm.onchangeParent();
+            _generated = true;
+        }   
+
+        lm.generate = function() 
+        {
+            let _i;
+            _html =`<div class="accordion lumap-aside" id="${_idAside}">`;
             if(_el==null)
             {
                 console.error('Selector is null')
@@ -29,11 +43,7 @@
                 _html += lm.genBody(_l[_i]);
             }
             _html += `</div>`;
-
-            _el.innerHTML = _html;
-
-            lm.onchange();
-            _generated = true;
+            return _html;
         }
 
         lm.eachLayersRemove = function(v,k,m)
@@ -49,11 +59,11 @@
             if(!_generated)
             {
                 let _els = _el.querySelectorAll('.lm-click-layer');
-                for(_elClick of _els)
+                for(let _elChange of _els)
                 {
-                    _elClick.addEventListener('change',(e)=>{
+                    _elChange.addEventListener('change',(e)=>{
                         let _getId = e.target.value;
-                        let _chckd = document.querySelector(`input[id="${_getId}"]`).checked;
+                        let _chckd = _el.querySelector(`input[id="${_getId}"]`).checked;
                         let _getLayer = _layers.get(_getId);
                         if(_getLayer.group.type=='single')
                         {
@@ -66,10 +76,52 @@
                         }
                         else
                         {
-                            console.log(_getId)
-                            _map.removeLayer(_getLayer.layer);
+                             _map.removeLayer(_getLayer.layer);
                         }
 
+                    });
+                }
+            }
+        }
+
+        lm.onchangeParent = function()
+        {
+            if(!_generated)
+            {
+                let _elParents = _el.querySelectorAll('.lm-click-parent');
+                for(let _elParent of _elParents)
+                {
+                    let _getParent = _elParent.value;
+                    let _elChilds = _el.querySelectorAll(`input[data-parent="${_getParent}"]`);
+                    let _childChecked = true;
+                    for(let _elChild of _elChilds)
+                    {
+                        if(_childChecked)
+                        {
+                            if(!_elChild.checked)
+                            {
+                                _childChecked = false;
+                                continue;
+                            }
+                        }
+                    }
+
+                    _elParent.checked = _childChecked;
+
+                    _elParent.addEventListener('change',(e)=>{
+                        let _chckd = e.target.checked;
+                        for(let _elChild of _elChilds)
+                        {
+                            if(_chckd)
+                            {
+                                _elChild.checked  = true;
+                            }
+                            else
+                            {
+                                _elChild.checked = false;
+                            }
+                            _elChild.dispatchEvent(new Event('change'));
+                        }
                     });
                 }
             }
@@ -82,7 +134,7 @@
             let _setTitle = _d.title;
              _h += `<div class="accordion-item">
                     <h2 class="accordion-header d-flex gap-2 align-items-center" id="headingOne">
-                        <input class="form-check-input lm-click-layer" type="checkbox" value="${_setId}">
+                        <input class="form-check-input lm-click-parent" type="checkbox" value="${_setId}">
                       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#header-${_setId}" aria-expanded="true" aria-controls="collapseOne">
                         ${_setTitle}
                      </button>
@@ -90,9 +142,11 @@
                     <div id="header-${_setId}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#${_idAside}">
                       <div class="accordion-body">`;
             let _i;
+            let _c = 0;
             for(_i in _d.child)
             {
-                let _setIdChild = `${_d.id}${_i}`
+                // calculate total checkd default
+                let _setIdChild = `${_d.id}${_i}`;
                 let _c = _d.child[_i];
                 lm.genLayers(_setIdChild,_c.layer,_d);
                 let _setType = 'checkbox';
@@ -112,7 +166,7 @@
                                 ${_c.title}
                               </label>
                             </div>
-                          <input class="form-check-input lm-click-layer" name="${_setId}" ${_checked} type="${_setType}" value="${_setIdChild}" id="${_setIdChild}">
+                          <input class="form-check-input lm-click-layer" data-parent="${_setId}" name="${_setId}" ${_checked} type="${_setType}" value="${_setIdChild}" id="${_setIdChild}">
                         </div>`;
 
             }
@@ -168,8 +222,7 @@
             return result;
         }
 
-       lm.init();
+        lm.init();
     };
-
     return Lumap;
 })));
