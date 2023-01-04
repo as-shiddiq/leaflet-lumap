@@ -131,7 +131,7 @@
 		for(i in geojsonKecamatan)
 		{
 			let color = geojsonKecamatan[i];
-			let get = await fetch(`/geojson/kecamatan/${i}.geojson`);
+			let get = await fetch(`geojson/kecamatan/${i}.geojson`);
 			let resp = await get.json();
 			let layer = L.geoJSON(resp,{
 				onEachFeature : function(f,l){
@@ -166,7 +166,7 @@
 			let icon = geojsonLainnya[i].icon;
 			let title = geojsonLainnya[i].title;
 			let popup = geojsonLainnya[i].popup;
-			let get = await fetch(`/geojson/lainnya/${i}.geojson`);
+			let get = await fetch(`geojson/lainnya/${i}.geojson`);
 			let resp = await get.json();
 			let layer = L.geoJSON(resp,{
 				onEachFeature : function(f,l){
