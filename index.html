@@ -9,20 +9,24 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
 	crossorigin=""/>
+	<link rel="stylesheet" href="css/leaflet.lumap.css"/>
 	<title>Luar Map</title>
 
 	<style type="text/css">
-		#map { height: 100vh; }
+		@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
+		#map { height: 100vh;width:100% }
 	</style>
 </head>
 <body>
+<div class="container-fluid">
 <div class="row">
 	<div class="col-md-2">
 		<div id="lumap"></div>
 	</div>
 	<div class="col-md-10">
-			<div id="map"></div>
+		<div id="map"></div>
 	</div>
+</div>
 </div>
 
  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
@@ -46,10 +50,12 @@
 			child : [
 				{
 					title : "OpenStreetMap",
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
 					layer : osm
 				},
 				{
 					title : 'Satellite',
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
 				    layer : satellite
 				}
 			]
@@ -67,6 +73,8 @@
 			child : [
 					{
 					    title: "Cities",
+					    icon:'house',
+					    style:'background:#9c89b8;color:#fff',
 					    layer:cities
 					}
 				]
