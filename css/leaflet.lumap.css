@@ -115,8 +115,11 @@ https://github.com/as-shiddiq/leaflet-lumap
 .lm-toggle-minimize{
   display: none;
 }
+.lm-aside-show .lm-toggle-minimize{
+  display: block;
+}
 
-.lumap-mini.lumap-container{
+.lm-mini .lumap-container{
     height: 100vh !important;
     width: 100%;
     position: fixed;
@@ -124,13 +127,14 @@ https://github.com/as-shiddiq/leaflet-lumap
     position: fixed;
     bottom: 0px;
     border-radius: 10px;
+    display: none;
 }
 
-.lumap-mini.hide .lumap-aside{
-  display: none;
+.lm-mini.lm-mini-show .lumap-container{
+  display: block;
 }
 
-.lumap-mini .lumap-aside{
+.lm-mini .lumap-aside{
   animation: zoomIn .1s ease-in;
   height: auto;
   border:1px solid #eee;
@@ -138,7 +142,7 @@ https://github.com/as-shiddiq/leaflet-lumap
   margin: 20px;
 }
 
-.lumap-mini .lm-toggle-minimize{
+.lm-toggle-minimize{
   position: fixed;
   display: block;
   box-shadow: 0px 0px 10px 5px #0002;

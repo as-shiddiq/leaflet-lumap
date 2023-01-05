@@ -34,6 +34,8 @@ https://github.com/as-shiddiq/leaflet-lumap
             _idAside  = `lumap-${lm.makeId(5)}`;
             _el.classList.add('lumap-container');
             _el.innerHTML = lm.generate();
+            document.body.innerHTML += `<button class="btn-default btn-icon btn lm-toggle-minimize"> <span class="bi bi-layers-fill"></button>`;
+
             lm.onchange();
             lm.onchangeParent();
             lm.responsive();
@@ -44,18 +46,17 @@ https://github.com/as-shiddiq/leaflet-lumap
         {
             let _height = _el.parentNode.offsetHeight;
             _el.style.height = _height+'px';
-
-            if(window.screen.width<=768)
+            if(window.screen.width<768)
             {
-               _el.classList.add('lumap-mini');
+               document.body.classList.add('lm-mini');
             }
             else
             {
-               _el.classList.remove('lumap-mini');
+               document.body.classList.remove('lm-mini');
             }
 
-            let _elLmToggleMinimize = _el.querySelector('.lm-toggle-minimize');
-            if(_elLmToggleMinimize.classList.contains('show'))
+            let _elLmToggleMinimize = document.querySelector('.lm-toggle-minimize');
+            if(document.body.classList.contains('show'))
             {
                 _el.classList.remove('hide');
             }
@@ -68,8 +69,7 @@ https://github.com/as-shiddiq/leaflet-lumap
         lm.generate = function() 
         {
             let _i;
-            _html =`<button class="btn-default btn-icon btn lm-toggle-minimize">    <span class="bi bi-layers-fill"></button>`;
-            _html +=`<div class="accordion lumap-aside" id="${_idAside}">`;
+            _html =`<div class="accordion lumap-aside" id="${_idAside}">`;
             if(_el==null)
             {
                 console.error('Selector is null')
@@ -93,17 +93,16 @@ https://github.com/as-shiddiq/leaflet-lumap
 
         lm.onchange = function()
         {
-            let _elLmToggleMinimize = _el.querySelector('.lm-toggle-minimize');
+            let _elLmToggleMinimize = document.querySelector('.lm-toggle-minimize');
             _elLmToggleMinimize.addEventListener('click',()=>{
-                _elLmToggleMinimize.classList.toggle('show');
-                if(_elLmToggleMinimize.classList.contains('show'))
+                document.body.classList.toggle('lm-mini-show');
+                if(document.body.classList.contains('lm-mini-show'))
                 {
-                    _el.classList.remove('hide');
                     _elLmToggleMinimize.innerHTML = `<span class="bi bi-x-lg"></span>`
                 }
                 else
                 {
-                    _el.classList.add('hide');
+                    document.body.classList.remove('lm-mini-show');
                     _elLmToggleMinimize.innerHTML = `<span class="bi bi-layers-fill"></span>`
                 }
             });
