@@ -144,7 +144,7 @@ https://github.com/as-shiddiq/leaflet-lumap
 
 .lm-toggle-minimize{
   position: fixed;
-  display: block;
+  display: none;
   box-shadow: 0px 0px 10px 5px #0002;
   background: #57ce00;
   right: 10px;
@@ -158,6 +158,10 @@ https://github.com/as-shiddiq/leaflet-lumap
   color: #fff;
 }
 
+.lm-mini .lm-toggle-minimize{
+  display: block;
+}
+
 @keyframes zoomIn {
   0% {
     transform: scale(0, 0);
@@ -166,6 +170,7 @@ https://github.com/as-shiddiq/leaflet-lumap
     transform: scale(1, 1);
   }
 }
+
 @keyframes zoomOut {
   0% {
     transform: scale(1, 1);

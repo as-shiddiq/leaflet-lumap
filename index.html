@@ -219,6 +219,22 @@
 		L.control.watermark({ position: 'topright' }).addTo(map);
 	});
 
+
+	// responsive map
+    window.addEventListener('resize',setMapZoom) ;
+	setMapZoom();
+    function setMapZoom()
+    {
+		if(window.screen.width<768)
+        {
+        	map.setZoom(9);
+        }
+        else
+        {
+        	map.setZoom(10);
+        }
+    }
+	// responsive map
 </script>
 </body>
 </html>

@@ -25,17 +25,16 @@ https://github.com/as-shiddiq/leaflet-lumap
             lm.init();
         }
 
-        onresize = (event) => {
+        window.addEventListener('resize',()=>{
             lm.responsive();
-        }
+        }) 
 
         lm.init = function()
         {
             _idAside  = `lumap-${lm.makeId(5)}`;
             _el.classList.add('lumap-container');
             _el.innerHTML = lm.generate();
-            document.body.innerHTML += `<button class="btn-default btn-icon btn lm-toggle-minimize"> <span class="bi bi-layers-fill"></button>`;
-
+            document.body.insertAdjacentHTML('beforeend',`<button class="btn-default btn-icon btn lm-toggle-minimize"> <span class="bi bi-layers-fill"></span></button>`);
             lm.onchange();
             lm.onchangeParent();
             lm.responsive();
@@ -53,16 +52,6 @@ https://github.com/as-shiddiq/leaflet-lumap
             else
             {
                document.body.classList.remove('lm-mini');
-            }
-
-            let _elLmToggleMinimize = document.querySelector('.lm-toggle-minimize');
-            if(document.body.classList.contains('show'))
-            {
-                _el.classList.remove('hide');
-            }
-            else
-            {
-                _el.classList.add('hide');
             }
         }
 
