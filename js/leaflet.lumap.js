@@ -193,10 +193,12 @@ https://github.com/as-shiddiq/leaflet-lumap
              _h += `<div class="lumap-aside-item">
                     <input class="lumap-aside-checkbox" type="checkbox" ${_collapse} id="checbox-${_setId}"/>
                     <div class="lumap-aside-header">
-                        ${_parentCheckBox}
-                        <label for="checbox-${_setId}">
-                        ${_setTitle}
-                        </label>
+                        <div>
+                            ${_parentCheckBox}
+                            <label for="checbox-${_setId}">
+                            ${_setTitle}
+                            </label>
+                        </div>
                     </div>
                     <div class="lumap-aside-body">`;
             let _i;
@@ -220,7 +222,7 @@ https://github.com/as-shiddiq/leaflet-lumap
                 _h += `<div class="lumap-aside-body-items">
                         <div class="lumap-aside-body-item">
                           ${lm.setIcon(_c)}
-                          <label class="form-check-label" for="${_setIdChild}">
+                          <label for="${_setIdChild}">
                             ${_c.title}
                           </label>
                         </div>
