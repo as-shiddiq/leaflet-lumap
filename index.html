@@ -5,7 +5,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- bootstrap -->
   	<link rel="icon" type="image/x-icon" href="images/icon.png">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<!-- leaflet -->
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
@@ -21,31 +20,53 @@
 			background-size: cover;
 			background-position: center center;
 			height: 100vh;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.row{
+			display: flex;
+			background: #fff;
 		}
 		.container{
 			height: 800px;
+			width: calc(100% - 100px);
 			background: #fff;
 			overflow: hidden;
 			border-radius: 10px;
 			box-shadow: 5px 5px 5px 5px #0002;
 		}
+		.row-1{
+			width: 25%;
+		}
+		.row-2{
+			width: 75%;
+		}
 		#map { height: 800px;width:100wh}
-
 		@media (max-width: 768px) {
 			.container {
 				height: auto;
+				width: 100%;
+  			}
+  			.row{
+  				display: block;
+  			}
+  			[class*="row-"]{
+  				width: 100%;
   			}
 			#map { height: 100vh}
 		}
 	</style>
 </head>
-<body class="d-flex align-items-center">
+<body>
 <div class="container">
 <div class="row">
-	<div class="col-md-3 p-0">
+	<div class="row-1">
 		<div id="lumap"></div>
 	</div>
-	<div class="col-md-9 p-0">
+	<div class="row-2">
 		<div id="map"></div>
 	</div>
 </div>
@@ -55,7 +76,6 @@
      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
      crossorigin=""></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/leaflet.lumap.js"></script>
 <script type="text/javascript">
 	// decsribe list geojson 

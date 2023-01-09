@@ -34,7 +34,7 @@ https://github.com/as-shiddiq/leaflet-lumap
             _idAside  = `lumap-${lm.makeId(5)}`;
             _el.classList.add('lumap-container');
             _el.innerHTML = lm.generate();
-            document.body.insertAdjacentHTML('beforeend',`<button class="btn-default btn-icon btn lm-toggle-minimize"> <span class="bi bi-layers-fill"></span></button>`);
+            document.body.insertAdjacentHTML('beforeend',`<button class="btn-default btn-icon btn lumap-toggle-minimize"> <span class="bi bi-layers-fill"></span></button>`);
             lm.onchange();
             lm.onchangeParent();
             lm.responsive();
@@ -47,18 +47,18 @@ https://github.com/as-shiddiq/leaflet-lumap
             _el.style.height = _height+'px';
             if(window.screen.width<768)
             {
-               document.body.classList.add('lm-mini');
+               document.body.classList.add('lumap-mini');
             }
             else
             {
-               document.body.classList.remove('lm-mini');
+               document.body.classList.remove('lumap-mini');
             }
         }
 
         lm.generate = function() 
         {
             let _i;
-            _html =`<div class="accordion lumap-aside" id="${_idAside}">`;
+            _html =`<div class="lumap-aside" id="${_idAside}">`;
             if(_el==null)
             {
                 console.error('Selector is null')
@@ -82,16 +82,16 @@ https://github.com/as-shiddiq/leaflet-lumap
 
         lm.onchange = function()
         {
-            let _elLmToggleMinimize = document.querySelector('.lm-toggle-minimize');
+            let _elLmToggleMinimize = document.querySelector('.lumap-toggle-minimize');
             _elLmToggleMinimize.addEventListener('click',()=>{
-                document.body.classList.toggle('lm-mini-show');
-                if(document.body.classList.contains('lm-mini-show'))
+                document.body.classList.toggle('lumap-mini-show');
+                if(document.body.classList.contains('lumap-mini-show'))
                 {
                     _elLmToggleMinimize.innerHTML = `<span class="bi bi-x-lg"></span>`
                 }
                 else
                 {
-                    document.body.classList.remove('lm-mini-show');
+                    document.body.classList.remove('lumap-mini-show');
                     _elLmToggleMinimize.innerHTML = `<span class="bi bi-layers-fill"></span>`
                 }
             });
@@ -103,7 +103,7 @@ https://github.com/as-shiddiq/leaflet-lumap
                 //     _el.classList.add('hide');
                 // }
 
-                let _els = _el.querySelectorAll('.lm-click-layer');
+                let _els = _el.querySelectorAll('.lumap-click-layer');
                 for(let _elChange of _els)
                 {
                     _elChange.addEventListener('change',(e)=>{
@@ -133,7 +133,7 @@ https://github.com/as-shiddiq/leaflet-lumap
         {
             if(!_generated)
             {
-                let _elParents = _el.querySelectorAll('.lm-click-parent');
+                let _elParents = _el.querySelectorAll('.lumap-click-parent');
                 for(let _elParent of _elParents)
                 {
                     let _getParent = _elParent.value;
@@ -178,13 +178,11 @@ https://github.com/as-shiddiq/leaflet-lumap
             let _setId = `${_d.id}`;
             let _setTitle = _d.title;
             let _type = _d.type;
-            let _show = '';
-            let _collapsed = 'collapsed';
-            let _parentCheckBox = `<input class="form-check-input lm-click-parent" type="checkbox" value="${_setId}">`;
+            let _collapse = '';
+            let _parentCheckBox = `<input class="lumap-formm-check lumap-click-parent" type="checkbox" value="${_setId}">`;
             if(_first)
             {
-                _show = 'show';
-                _collapsed = '';
+                _collapse = ' checked ';
                 _first = false;
             }
             if(_type=='single')
@@ -192,15 +190,15 @@ https://github.com/as-shiddiq/leaflet-lumap
                 _parentCheckBox = ``;
             }
 
-             _h += `<div class="accordion-item">
-                    <h2 class="accordion-header d-flex gap-2 align-items-center" id="headingOne">
+             _h += `<div class="lumap-aside-item">
+                    <input class="lumap-aside-checkbox" type="checkbox" ${_collapse} id="checbox-${_setId}"/>
+                    <div class="lumap-aside-header">
                         ${_parentCheckBox}
-                      <button class="accordion-button ${_collapsed}" type="button" data-bs-toggle="collapse" data-bs-target="#header-${_setId}" aria-expanded="true" aria-controls="collapseOne">
+                        <label for="checbox-${_setId}">
                         ${_setTitle}
-                     </button>
-                    </h2>
-                    <div id="header-${_setId}" class="accordion-collapse collapse ${_show}" aria-labelledby="headingOne">
-                      <div class="accordion-body">`;
+                        </label>
+                    </div>
+                    <div class="lumap-aside-body">`;
             let _i;
             let _c = 0;
             for(_i in _d.child)
@@ -219,19 +217,18 @@ https://github.com/as-shiddiq/leaflet-lumap
                 {
                     _setType = 'radio';
                 }
-                _h += `<div class="form-check d-flex align-items-center justify-content-between gap-2">
-                            <div class="d-flex align-items-center gap-1">
-                              ${lm.setIcon(_c)}
-                              <label class="form-check-label" for="${_setIdChild}">
-                                ${_c.title}
-                              </label>
-                            </div>
-                          <input class="form-check-input lm-click-layer" data-parent="${_setId}" name="${_setId}" ${_checked} type="${_setType}" value="${_setIdChild}" id="${_setIdChild}">
+                _h += `<div class="lumap-aside-body-items">
+                        <div class="lumap-aside-body-item">
+                          ${lm.setIcon(_c)}
+                          <label class="form-check-label" for="${_setIdChild}">
+                            ${_c.title}
+                          </label>
+                        </div>
+                        <input class="lumap-formm-check lumap-click-layer" data-parent="${_setId}" name="${_setId}" ${_checked} type="${_setType}" value="${_setIdChild}" id="${_setIdChild}">
                         </div>`;
 
             }
             _h += `</div>
-                    </div>
                   </div>`;
             return _h;
         }
@@ -250,12 +247,12 @@ https://github.com/as-shiddiq/leaflet-lumap
                 let _h = ``;
                 if(_d.iconHtml!=undefined)
                 {
-                    _h += `<div class="lm-icon lm-icon-image" ${lm.setStyle(_d)}>`;
+                    _h += `<div class="lumap-icon lumap-icon-image" ${lm.setStyle(_d)}>`;
                     _h += _d.iconHtml;
                 }
                 else
                 {
-                    _h += `<div class="lm-icon" ${lm.setStyle(_d)}>`;
+                    _h += `<div class="lumap-icon" ${lm.setStyle(_d)}>`;
                     _h += `<span class="bi bi-${_d.icon}"></span>`;
                 }
                 _h += `</div>`;

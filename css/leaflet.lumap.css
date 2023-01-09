@@ -10,6 +10,9 @@ https://github.com/as-shiddiq/leaflet-lumap
 .lumap-container::-webkit-scrollbar {
   width: 5px;
 }
+.lumap-flex{
+  display: flex;
+}
 
 /* Track */
 .lumap-container::-webkit-scrollbar-track {
@@ -34,11 +37,14 @@ https://github.com/as-shiddiq/leaflet-lumap
   height: 100%;
 }
 
-.lumap-aside .accordion-header{
+.lumap-aside .lumap-aside-header{
   padding: .5rem 0;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
 }
 
-.lumap-aside .accordion-header > button{
+.lumap-aside .lumap-aside-header > label{
   font-weight: bolder;
   font-size: 1rem;
   padding: 0;
@@ -54,45 +60,25 @@ https://github.com/as-shiddiq/leaflet-lumap
   padding: 0;
 }
 
-.lumap-aside .accordion-button::after
-{
-  width: 1rem;
-  background-size:1rem;
-  height: 1rem;
-}
 
-.lumap-aside .accordion-button:not(.collapsed)
-{
-  color: #0c63e4;
-  box-shadow: none;
-}
-
-.lumap-aside .accordion-item{
+.lumap-aside .lumap-aside-item{
+  overflow: hidden;
   border: 0;
 }
 
-.lumap-aside .accordion-button:focus{
-  box-shadow: none;
-}
-
-.lumap-aside .accordion-button:not(.collapsed)
-{
-  background: inherit;
-}
-
-.lumap-aside .accordion-body{
+.lumap-aside .lumap-aside-body{
   padding: 0;
 }
 
-.lumap-aside .accordion-body .form-check{
+.lumap-aside .lumap-aside-body .form-check{
   padding: .25rem 0 !important;
 }
 
-.lumap-aside .accordion-body .form-check .form-check-label:hover{
+.lumap-aside .lumap-aside-body .form-check .form-check-label:hover{
   cursor: pointer;
 }
 
-.lumap-aside .accordion-body .lm-icon{
+.lumap-aside .lumap-aside-body .lumap-icon{
   width: 1.5rem;
   height: 1.5rem;
   border-radius: .25rem;
@@ -101,25 +87,38 @@ https://github.com/as-shiddiq/leaflet-lumap
   color: #fff;
 }
 
-.lumap-aside .accordion-body .lm-icon-image
+.lumap-aside .lumap-aside-body .lumap-icon-image
 {
   background: transparent;
 }
 
-.lumap-aside .accordion-body .lm-icon img{
+.lumap-aside .lumap-aside-body .lumap-icon img{
   object-fit: cover !important;
   width: 1.5rem;
   height: 1.5rem;
 }
 
-.lm-toggle-minimize{
+.lumap-aside-body-items{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lumap-aside-body-items > .lumap-aside-body-item{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lumap-toggle-minimize{
   display: none;
 }
-.lm-aside-show .lm-toggle-minimize{
+.lumap-aside-show .lumap-toggle-minimize{
   display: block;
 }
 
-.lm-mini .lumap-container{
+.lumap-mini .lumap-container{
     height: 100vh !important;
     width: 100%;
     position: fixed;
@@ -130,11 +129,11 @@ https://github.com/as-shiddiq/leaflet-lumap
     display: none;
 }
 
-.lm-mini.lm-mini-show .lumap-container{
+.lumap-mini.lumap-mini-show .lumap-container{
   display: block;
 }
 
-.lm-mini .lumap-aside{
+.lumap-mini .lumap-aside{
   animation: zoomIn .1s ease-in;
   height: auto;
   border:1px solid #eee;
@@ -142,7 +141,7 @@ https://github.com/as-shiddiq/leaflet-lumap
   margin: 20px;
 }
 
-.lm-toggle-minimize{
+.lumap-toggle-minimize{
   position: fixed;
   display: none;
   box-shadow: 0px 0px 10px 5px #0002;
@@ -158,9 +157,32 @@ https://github.com/as-shiddiq/leaflet-lumap
   color: #fff;
 }
 
-.lm-mini .lm-toggle-minimize{
+.lumap-mini .lumap-toggle-minimize{
   display: block;
 }
+
+/*accoddion*/
+
+.lumap-aside .lumap-aside-checkbox {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+.lumap-aside .lumap-aside-body
+ {
+  max-height: 0;
+  transition: all 0.35s;
+}
+
+.lumap-aside .lumap-aside-checkbox:checked ~ .lumap-aside-header > label{
+  color:#0c63e4 !important;
+}
+.lumap-aside .lumap-aside-checkbox:checked ~ .lumap-aside-body
+{
+  transition: all 1s;
+  max-height: 100vh;
+}
+
 
 @keyframes zoomIn {
   0% {
