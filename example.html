@@ -4,26 +4,78 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- bootstrap -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  	<link rel="icon" type="image/x-icon" href="images/icon.png">
 	<!-- leaflet -->
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 	integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
 	crossorigin=""/>
 	<link rel="stylesheet" href="css/leaflet.lumap.css"/>
-	<title>Luar Map</title>
+
+	<title>Lumap - Leaflet Control Luar Map</title>
 
 	<style type="text/css">
-		@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
-		#map { height: 100vh;width:100% }
+		
+		body{
+			background-image: url('images/background.svg');
+			background-size: cover;
+			background-position: center center;
+			height: 100vh;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.row{
+			display: flex;
+			background: #fff;
+		}
+		.container{
+			height: 800px;
+			width: 1300px;
+			background: #fff;
+			overflow: hidden;
+			border-radius: 10px;
+			box-shadow: 5px 5px 5px 5px #0002;
+		}
+		.row-1{
+			width: 25%;
+		}
+		.row-2{
+			width: 75%;
+		}
+		#map { height: 800px;width:100wh}
+		@media (max-width: 1368px) {
+			.container {
+				height: 600px;
+				width: 1000px;
+				max-width: calc(100% - 150px);
+  			}
+		}
+		@media (max-width: 768px) {
+			.container {
+				height: auto;
+				width: 100%;
+				max-width: 100%;
+  			}
+  			.row{
+  				display: block;
+  			}
+  			[class*="row-"]{
+  				width: 100%;
+  			}
+			#map { height: 100vh}
+		}
 	</style>
 </head>
 <body>
 <div class="container">
 <div class="row">
-	<div class="col-md-3">
+	<div class="row-1">
 		<div id="lumap"></div>
 	</div>
-	<div class="col-md-9">
+	<div class="row-2">
+		<div id="lumap2"></div>
 		<div id="map"></div>
 	</div>
 </div>
@@ -33,15 +85,52 @@
      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
      crossorigin=""></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/leaflet.lumap.js"></script>
 <script type="text/javascript">
-	let map = L.map('map').setView([39.73, -104.99], 13);
+	// decsribe list geojson 
+	let geojsonKecamatan = {
+		"Bajuin":"#D81159",
+		"Bati_Bati":"#379392", 
+		"Batu_Ampar":"#4FB0C6", 
+		"Bumi_Makmur":"#4F86C6",
+		"Jorong":"#744FC6",
+		"Kintap":"#8F2D56",
+		"Kurau":"#FACFAD",
+		"Panyipatan":"#F8BD7F",
+		"Pelaihari":"#F5AC72",
+		"Takisung":"#F2AA7E",
+		"Tambang_Ulang":"#AF125A"
+	};
+	let geojsonLainnya = {
+		"spbu":{
+			"color":"#FE1C0B",
+			"icon":"fuel-pump",
+			"title":"SPBU",
+			"popup":"NAMOBJ"
+		},
+		"batas-wilayah":{
+			"color":"#28112B",
+			"icon":"bounding-box-circles",
+			"title":"Batas Wilayah",
+			"popup":"NAMOBJ"
+		}
+	}
+	let map = L.map('map').setView([-3.824181, 114.9191513], 10);
+
+	// describe basemap variabel
+	let mapboxD =  L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+							attribution: 'Map data &copy; <a href=\\\"https://www.openstreetmap.org/\\\">OpenStreetMap</a> contributors,<a href=\\\"https://creativecommons.org/licenses/by-sa/2.0/\\\">CC-BY-SA</a>,Imagery © <a href=\\\"https://www.mapbox.com/\\\">Mapbox</a>',
+						});
+	let mapboxL =  L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+							attribution: 'Map data &copy; <a href=\\\"https://www.openstreetmap.org/\\\">OpenStreetMap</a> contributors,<a href=\\\"https://creativecommons.org/licenses/by-sa/2.0/\\\">CC-BY-SA</a>,Imagery © <a href=\\\"https://www.mapbox.com/\\\">Mapbox</a>',
+						});
 	let osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	    maxZoom: 19,
 	    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(map);
-	const satellite = L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw`, {id: 'mapbox/satellite-v9', tileSize: 512, zoomOffset: -1, attribution: `Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>`});
+	});
+	// describe basemap variabel
+
+	mapboxL.addTo(map);
 
 	let baseMaps = {
 			id:'basemap',
@@ -49,41 +138,137 @@
 			type : 'single',
 			child : [
 				{
+					title : 'Mapbox Light',
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
+				    layer : mapboxL
+				},
+				{
+					title : 'Mapbox Dark',
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
+				    layer : mapboxD
+				},
+				{
 					title : "OpenStreetMap",
 					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
 					layer : osm
-				},
-				{
-					title : 'Satellite',
-					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
-				    layer : satellite
 				}
 			]
 		}
-	
-	let littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.');
-    let denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.');
-    let aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.');
-    let golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
-	let cities = L.layerGroup([littleton, denver, aurora, golden]).addTo(map);
-	
-	var overlayMaps = {
+	let overlayKecamatan = [];
+	let overlayMaps;
+	let getGeojsonKecamatan = async () => {
+		for(i in geojsonKecamatan)
+		{
+			let color = geojsonKecamatan[i];
+			let get = await fetch(`https://kodingakan.id/public/geojson/kecamatan/${i}.geojson`);
+			let resp = await get.json();
+			let layer = L.geoJSON(resp,{
+				onEachFeature : function(f,l){
+	        		l.bindPopup(f.properties.KECAMATAN);
+				},
+				style : {
+					color: color,
+				    weight:1,
+				    fillOpacity:1,
+				    dashArray:1
+				}
+			}).addTo(map);
+			overlayKecamatan.push({
+					    title: i.split('_').join(' '),
+					    icon:'geo',
+					    style:`background:${color};color:#fff`,
+					    layer:layer
+					});
+		}
+		overlayMaps = {
 			id:'layers',
-			title : 'Layers',
-			child : [
-					{
-					    title: "Cities",
-					    icon:'house',
-					    style:'background:#9c89b8;color:#fff',
-					    layer:cities
-					}
-				]
+			title : 'District',
+			child : overlayKecamatan
 		};
+	}
+	let overlayLainnya = [];
+	let overlayMaps2;
+	let getGeojsonLainnya = async () => {
+		for(i in geojsonLainnya)
+		{
+			let color = geojsonLainnya[i].color;
+			let icon = geojsonLainnya[i].icon;
+			let title = geojsonLainnya[i].title;
+			let popup = geojsonLainnya[i].popup;
+			let get = await fetch(`geojson/lainnya/${i}.geojson`);
+			let resp = await get.json();
+			let layer = L.geoJSON(resp,{
+				onEachFeature : function(f,l){
+	        		l.bindPopup(f.properties[popup]);
+				},
+				style : {
+					color: color,
+				    weight:2,
+				    fillOpacity:1,
+				    dashArray:1
+				}
+			});
+			overlayLainnya.push({
+					    title: title,
+					    icon:icon,
+					    style:`background:${color};color:#fff`,
+					    layer:layer
+					});
+		}
+		overlayMaps2 = {
+			id:'layers2',
+			title : 'Administration',
+			child : overlayLainnya
+		};
+	}
+	
+	getGeojsonKecamatan().then(async()=>{
+		await getGeojsonLainnya()
+		let elLumap = document.querySelector('#lumap');
+		let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps,overlayMaps2],{
+			bootstrapIcon : false,
+			responsive:{
+                triggerButton : 'bottom-right'
+			}
+		});
+		L.Control.Watermark = L.Control.extend({
+		    onAdd: function(map) {
+		        var img = L.DomUtil.create('img');
 
-	let elLumap = document.querySelector('#lumap');
-	let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps]);
-	lumap.reinit()
+		        img.src = 'images/logo.png';
+		        img.style.width = '150px';
 
+		        return img;
+		    },
+
+		    onRemove: function(map) {
+		        // Nothing to do here
+		    }
+		});
+
+		L.control.watermark = function(opts) {
+		    return new L.Control.Watermark(opts);
+		}
+
+		L.control.watermark({ position: 'topright' }).addTo(map);
+	});
+
+
+	// responsive map
+    window.addEventListener('resize',setMapZoom) ;
+	setMapZoom();
+    function setMapZoom()
+    {
+		if(window.screen.width<768)
+        {
+        	map.setZoom(9);
+        }
+        else
+        {
+        	map.setZoom(10);
+        }
+    }
+	// responsive map
 </script>
 </body>
 </html>

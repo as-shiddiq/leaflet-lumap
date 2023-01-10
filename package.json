@@ -1,0 +1,18 @@
+{
+  "dependencies": {},
+  "description": "npm module for node js development",
+  "keywords": [
+    "leaflet",
+    "javascript",
+    "package"
+  ],
+  "name": "@as-shiddiq/leaflet-lumap",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/as-shiddiq/leaflet-lumap.git"
+  },
+  "version": "0.0.0"
+}

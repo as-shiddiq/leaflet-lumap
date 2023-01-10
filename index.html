@@ -75,7 +75,6 @@
 		<div id="lumap"></div>
 	</div>
 	<div class="row-2">
-		<div id="lumap2"></div>
 		<div id="map"></div>
 	</div>
 </div>
@@ -87,49 +86,16 @@
 
 <script type="text/javascript" src="js/leaflet.lumap.js"></script>
 <script type="text/javascript">
-	// decsribe list geojson 
-	let geojsonKecamatan = {
-		"Bajuin":"#D81159",
-		"Bati_Bati":"#379392", 
-		"Batu_Ampar":"#4FB0C6", 
-		"Bumi_Makmur":"#4F86C6",
-		"Jorong":"#744FC6",
-		"Kintap":"#8F2D56",
-		"Kurau":"#FACFAD",
-		"Panyipatan":"#F8BD7F",
-		"Pelaihari":"#F5AC72",
-		"Takisung":"#F2AA7E",
-		"Tambang_Ulang":"#AF125A"
-	};
-	let geojsonLainnya = {
-		"spbu":{
-			"color":"#FE1C0B",
-			"icon":"fuel-pump",
-			"title":"SPBU",
-			"popup":"NAMOBJ"
-		},
-		"batas-wilayah":{
-			"color":"#28112B",
-			"icon":"bounding-box-circles",
-			"title":"Batas Wilayah",
-			"popup":"NAMOBJ"
-		}
-	}
-	let map = L.map('map').setView([-3.824181, 114.9191513], 10);
 
+	let map = L.map('map').setView([39.73, -104.99], 13);
 	// describe basemap variabel
 	let mapboxD =  L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 							attribution: 'Map data &copy; <a href=\\\"https://www.openstreetmap.org/\\\">OpenStreetMap</a> contributors,<a href=\\\"https://creativecommons.org/licenses/by-sa/2.0/\\\">CC-BY-SA</a>,Imagery © <a href=\\\"https://www.mapbox.com/\\\">Mapbox</a>',
 						});
 	let mapboxL =  L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-							attribution: 'Map data &copy; <a href=\\\"https://www.openstreetmap.org/\\\">OpenStreetMap</a> contributors,<a href=\\\"https://creativecommons.org/licenses/by-sa/2.0/\\\">CC-BY-SA</a>,Imagery © <a href=\\\"https://www.mapbox.com/\\\">Mapbox</a>',
-						});
-	let osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	    maxZoom: 19,
-	    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	});
+						attribution: 'Map data &copy; <a href=\\\"https://www.openstreetmap.org/\\\">OpenStreetMap</a> contributors,<a href=\\\"https://creativecommons.org/licenses/by-sa/2.0/\\\">CC-BY-SA</a>,Imagery © <a href=\\\"https://www.mapbox.com/\\\">Mapbox</a>',
+					});
 	// describe basemap variabel
-
 	mapboxL.addTo(map);
 
 	let baseMaps = {
@@ -146,113 +112,28 @@
 					title : 'Mapbox Dark',
 					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
 				    layer : mapboxD
-				},
-				{
-					title : "OpenStreetMap",
-					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
-					layer : osm
 				}
 			]
-		}
-	let overlayKecamatan = [];
-	let overlayMaps;
-	let getGeojsonKecamatan = async () => {
-		for(i in geojsonKecamatan)
-		{
-			let color = geojsonKecamatan[i];
-			let get = await fetch(`geojson/kecamatan/${i}.geojson`);
-			let resp = await get.json();
-			let layer = L.geoJSON(resp,{
-				onEachFeature : function(f,l){
-	        		l.bindPopup(f.properties.KECAMATAN);
-				},
-				style : {
-					color: color,
-				    weight:1,
-				    fillOpacity:1,
-				    dashArray:1
-				}
-			}).addTo(map);
-			overlayKecamatan.push({
-					    title: i.split('_').join(' '),
-					    icon:'geo',
-					    style:`background:${color};color:#fff`,
-					    layer:layer
-					});
-		}
-		overlayMaps = {
-			id:'layers',
-			title : 'District',
-			child : overlayKecamatan
 		};
-	}
-	let overlayLainnya = [];
-	let overlayMaps2;
-	let getGeojsonLainnya = async () => {
-		for(i in geojsonLainnya)
-		{
-			let color = geojsonLainnya[i].color;
-			let icon = geojsonLainnya[i].icon;
-			let title = geojsonLainnya[i].title;
-			let popup = geojsonLainnya[i].popup;
-			let get = await fetch(`geojson/lainnya/${i}.geojson`);
-			let resp = await get.json();
-			let layer = L.geoJSON(resp,{
-				onEachFeature : function(f,l){
-	        		l.bindPopup(f.properties[popup]);
-				},
-				style : {
-					color: color,
-				    weight:2,
-				    fillOpacity:1,
-				    dashArray:1
-				}
-			});
-			overlayLainnya.push({
-					    title: title,
-					    icon:icon,
-					    style:`background:${color};color:#fff`,
-					    layer:layer
-					});
-		}
-		overlayMaps2 = {
-			id:'layers2',
-			title : 'Administration',
-			child : overlayLainnya
-		};
-	}
-	
-	getGeojsonKecamatan().then(async()=>{
-		await getGeojsonLainnya()
-		let elLumap = document.querySelector('#lumap');
-		let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps,overlayMaps2],{
-			bootstrapIcon : false,
-			responsive:{
-                triggerButton : 'bottom-right'
-			}
-		});
-		L.Control.Watermark = L.Control.extend({
-		    onAdd: function(map) {
-		        var img = L.DomUtil.create('img');
 
-		        img.src = 'images/logo.png';
-		        img.style.width = '150px';
+	let littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.');
+	let denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.');
+	let aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.');
+	let golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
+	let cities = L.layerGroup([littleton, denver, aurora, golden]);
 
-		        return img;
-		    },
+	let overlayMaps = {
+		id:'layers',
+		title : 'Cities',
+		child : [{
+			title : 'Cities',
+			icon : `geo`,
+		    layer : cities
+		}]
+	};
 
-		    onRemove: function(map) {
-		        // Nothing to do here
-		    }
-		});
-
-		L.control.watermark = function(opts) {
-		    return new L.Control.Watermark(opts);
-		}
-
-		L.control.watermark({ position: 'topright' }).addTo(map);
-	});
-
+	let elLumap = document.querySelector('#lumap');
+	let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps]);
 
 	// responsive map
     window.addEventListener('resize',setMapZoom) ;
