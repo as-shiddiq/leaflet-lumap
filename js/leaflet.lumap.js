@@ -17,14 +17,14 @@ https://github.com/as-shiddiq/leaflet-lumap
         let _generated = false;
         let _layersGroup = '';
         let _first = true;
-        let _config = _c??{
-            bootstrapIcon : false,
-            responsive: {
-                triggerButton : 'bottom-right'
-            }
-        };
+        let _config = Object.assign({
+                bootstrapIcon : false,
+                responsive: {
+                    triggerButton : 'bottom-right'
+                }
+            }, _c);
 
-        this.reinit = function() 
+        lm.reinit = function() 
         {
             _generated = false;
             _el.innerHTML = '';
@@ -44,7 +44,7 @@ https://github.com/as-shiddiq/leaflet-lumap
             {
                 document.head.insertAdjacentHTML('beforeend',`<style>@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");</style>`);
             }
-            document.body.insertAdjacentHTML('beforeend',`<button class="btn-default btn-icon btn lumap-toggle-minimize ${_config.responsive.triggerButton}" data-target="${_idAside}"> <span class="bi bi-layers-fill"></span></button>`);
+            document.body.insertAdjacentHTML('beforeend',`<button class="lumap-toggle-minimize ${_config.responsive.triggerButton}" data-target="${_idAside}"> <span class="bi bi-layers-fill"></span></button>`);
             lm.onchange();
             lm.onchangeParent();
             lm.responsive();
@@ -98,6 +98,7 @@ https://github.com/as-shiddiq/leaflet-lumap
             _elLmToggleMinimize.addEventListener('click',()=>{
                 let _elTargetShow = _el.querySelector(`.lumap-aside[id="${_elLmToggleMinimize.getAttribute('data-target')}"]`).parentNode;
                 _elTargetShow.classList.toggle('lumap-mini-show');
+                _elLmToggleMinimize.classList.toggle('shown');
                 if(document.body.classList.contains('lumap-mini-show'))
                 {
                     _elLmToggleMinimize.innerHTML = `<span class="bi bi-x-lg"></span>`

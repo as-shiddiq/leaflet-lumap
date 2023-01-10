@@ -32,7 +32,7 @@
 		}
 		.container{
 			height: 800px;
-			width: 1200px;
+			width: 1300px;
 			background: #fff;
 			overflow: hidden;
 			border-radius: 10px;
@@ -48,13 +48,15 @@
 		@media (max-width: 1368px) {
 			.container {
 				height: 600px;
-				width: calc(100% - 100px);
+				width: 1000px;
+				max-width: calc(100% - 150px);
   			}
 		}
 		@media (max-width: 768px) {
 			.container {
 				height: auto;
 				width: 100%;
+				max-width: 100%;
   			}
   			.row{
   				display: block;
@@ -246,7 +248,12 @@
 	getGeojsonKecamatan().then(async()=>{
 		await getGeojsonLainnya()
 		let elLumap = document.querySelector('#lumap');
-		let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps,overlayMaps2]);
+		let lumap = new Lumap(map,elLumap,[baseMaps,overlayMaps,overlayMaps2],{
+			bootstrapIcon : false,
+			responsive:{
+                triggerButton : 'bottom-right'
+			}
+		});
 		L.Control.Watermark = L.Control.extend({
 		    onAdd: function(map) {
 		        var img = L.DomUtil.create('img');

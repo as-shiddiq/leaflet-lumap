@@ -85,6 +85,9 @@ https://github.com/as-shiddiq/leaflet-lumap
   text-align: center;
   background: #777;
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lumap-aside .lumap-aside-body .lumap-icon-image
@@ -116,13 +119,6 @@ https://github.com/as-shiddiq/leaflet-lumap
   color: #555;
 }
 
-.lumap-toggle-minimize{
-  display: none;
-}
-.lumap-aside-show .lumap-toggle-minimize{
-  display: block;
-}
-
 .lumap-mini .lumap-container{
     height: 100vh !important;
     width: 100%;
@@ -132,10 +128,6 @@ https://github.com/as-shiddiq/leaflet-lumap
     bottom: 0px;
     border-radius: 10px;
     display: none;
-}
-
-.lumap-mini-show.lumap-container{
-  display: block;
 }
 
 .lumap-mini .lumap-aside{
@@ -158,6 +150,8 @@ https://github.com/as-shiddiq/leaflet-lumap
   font-size: 20px;
   z-index: 10001;
   color: #fff;
+  transition: .5s all;
+  border:0;
 }
 .lumap-toggle-minimize.bottom-right{
   right: 10px;
@@ -185,6 +179,14 @@ https://github.com/as-shiddiq/leaflet-lumap
   accent-color: #0c68e7;
   padding: 0;
   margin: 0;
+}
+
+.lumap-mini-show.lumap-container{
+  display: block;
+}
+.lumap-toggle-minimize.shown{
+  background: #f00;
+  transition: .5s all;
 }
 /*accoddion*/
 
