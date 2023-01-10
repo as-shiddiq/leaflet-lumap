@@ -68,14 +68,6 @@ https://github.com/as-shiddiq/leaflet-lumap
   text-align: center;
   transition: all 0.35s;
 }
-.lumap-aside .form-check-input[type="checkbox"]{
-  height: 1rem;
-  width: 1rem;
-  margin: 0;
-  border-radius: .25rem;
-  padding: 0;
-}
-
 
 .lumap-aside .lumap-aside-item{
   overflow: hidden;
@@ -85,11 +77,6 @@ https://github.com/as-shiddiq/leaflet-lumap
 .lumap-aside .lumap-aside-body{
   padding: 0;
 }
-
-.lumap-aside .lumap-aside-body .form-check{
-  padding: .25rem 0 !important;
-}
-
 
 .lumap-aside .lumap-aside-body .lumap-icon{
   width: 1.5rem;
@@ -196,6 +183,8 @@ https://github.com/as-shiddiq/leaflet-lumap
   height: 1rem;
   width: 1rem;
   accent-color: #0c68e7;
+  padding: 0;
+  margin: 0;
 }
 /*accoddion*/
 
