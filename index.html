@@ -154,29 +154,6 @@
 				}
 			]
 		}
-
-	let baseMaps2 = {
-			id:'basemap2',
-			title : 'BaseMaps',
-			type : 'single',
-			child : [
-				{
-					title : 'Mapbox Light',
-					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
-				    layer : mapboxL
-				},
-				{
-					title : 'Mapbox Dark',
-					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
-				    layer : mapboxD
-				},
-				{
-					title : "OpenStreetMap",
-					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
-					layer : osm
-				}
-			]
-		}
 	let overlayKecamatan = [];
 	let overlayMaps;
 	let getGeojsonKecamatan = async () => {
