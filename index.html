@@ -14,7 +14,7 @@
 	<title>Lumap - Leaflet Control Luar Map</title>
 
 	<style type="text/css">
-		@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");
+		
 		body{
 			background-image: url('images/background.svg');
 			background-size: cover;
@@ -32,7 +32,7 @@
 		}
 		.container{
 			height: 800px;
-			width: calc(100% - 100px);
+			width: 1200px;
 			background: #fff;
 			overflow: hidden;
 			border-radius: 10px;
@@ -45,6 +45,12 @@
 			width: 75%;
 		}
 		#map { height: 800px;width:100wh}
+		@media (max-width: 1368px) {
+			.container {
+				height: 600px;
+				width: calc(100% - 100px);
+  			}
+		}
 		@media (max-width: 768px) {
 			.container {
 				height: auto;
@@ -67,6 +73,7 @@
 		<div id="lumap"></div>
 	</div>
 	<div class="row-2">
+		<div id="lumap2"></div>
 		<div id="map"></div>
 	</div>
 </div>
@@ -125,6 +132,29 @@
 
 	let baseMaps = {
 			id:'basemap',
+			title : 'BaseMaps',
+			type : 'single',
+			child : [
+				{
+					title : 'Mapbox Light',
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
+				    layer : mapboxL
+				},
+				{
+					title : 'Mapbox Dark',
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
+				    layer : mapboxD
+				},
+				{
+					title : "OpenStreetMap",
+					iconHtml : `<img src="https://cdn-icons-png.flaticon.com/512/5088/5088218.png">`,
+					layer : osm
+				}
+			]
+		}
+
+	let baseMaps2 = {
+			id:'basemap2',
 			title : 'BaseMaps',
 			type : 'single',
 			child : [

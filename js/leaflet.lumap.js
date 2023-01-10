@@ -8,7 +8,7 @@ https://github.com/as-shiddiq/leaflet-lumap
     (global = typeof globalThis !== 'undefined' ? globalThis : global || lm, global.Lumap = factory());
 }(this, (function () { 'use strict';
 
-    function Lumap(_map,_el,_l)
+    function Lumap(_map,_el,_l,_c=null)
     {
         let lm = this;
         let _html =``;
@@ -17,6 +17,12 @@ https://github.com/as-shiddiq/leaflet-lumap
         let _generated = false;
         let _layersGroup = '';
         let _first = true;
+        let _config = _c??{
+            bootstrapIcon : false,
+            responsive: {
+                triggerButton : 'bottom-right'
+            }
+        };
 
         this.reinit = function() 
         {
@@ -34,7 +40,11 @@ https://github.com/as-shiddiq/leaflet-lumap
             _idAside  = `lumap-${lm.makeId(5)}`;
             _el.classList.add('lumap-container');
             _el.innerHTML = lm.generate();
-            document.body.insertAdjacentHTML('beforeend',`<button class="btn-default btn-icon btn lumap-toggle-minimize"> <span class="bi bi-layers-fill"></span></button>`);
+            if(!_config.bootstrapIcon)
+            {
+                document.head.insertAdjacentHTML('beforeend',`<style>@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css");</style>`);
+            }
+            document.body.insertAdjacentHTML('beforeend',`<button class="btn-default btn-icon btn lumap-toggle-minimize ${_config.responsive.triggerButton}" data-target="${_idAside}"> <span class="bi bi-layers-fill"></span></button>`);
             lm.onchange();
             lm.onchangeParent();
             lm.responsive();
@@ -72,6 +82,8 @@ https://github.com/as-shiddiq/leaflet-lumap
             return _html;
         }
 
+
+        // remove each layer if in single layer mode in group
         lm.eachLayersRemove = function(v,k,m)
         {
             if(v.group.id==_layersGroup)
@@ -79,12 +91,13 @@ https://github.com/as-shiddiq/leaflet-lumap
                 _map.removeLayer(v.layer);
             }
         }
-
+        
         lm.onchange = function()
         {
-            let _elLmToggleMinimize = document.querySelector('.lumap-toggle-minimize');
+            let _elLmToggleMinimize = document.querySelector(`.lumap-toggle-minimize[data-target="${_idAside}"]`);
             _elLmToggleMinimize.addEventListener('click',()=>{
-                document.body.classList.toggle('lumap-mini-show');
+                let _elTargetShow = _el.querySelector(`.lumap-aside[id="${_elLmToggleMinimize.getAttribute('data-target')}"]`).parentNode;
+                _elTargetShow.classList.toggle('lumap-mini-show');
                 if(document.body.classList.contains('lumap-mini-show'))
                 {
                     _elLmToggleMinimize.innerHTML = `<span class="bi bi-x-lg"></span>`
@@ -97,12 +110,6 @@ https://github.com/as-shiddiq/leaflet-lumap
             });
             if(!_generated)
             {
-
-                // if(_elLmToggleMinimize.classList.includes('show'))
-                // {
-                //     _el.classList.add('hide');
-                // }
-
                 let _els = _el.querySelectorAll('.lumap-click-layer');
                 for(let _elChange of _els)
                 {

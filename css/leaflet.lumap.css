@@ -44,7 +44,11 @@ https://github.com/as-shiddiq/leaflet-lumap
   align-items: center;
   gap: .25rem;
 }
-
+.lumap-aside .lumap-aside-header > div{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 .lumap-aside .lumap-aside-header label{
   font-weight: bold;
   font-size: 1rem;
@@ -143,7 +147,7 @@ https://github.com/as-shiddiq/leaflet-lumap
     display: none;
 }
 
-.lumap-mini.lumap-mini-show .lumap-container{
+.lumap-mini-show.lumap-container{
   display: block;
 }
 
@@ -160,8 +164,6 @@ https://github.com/as-shiddiq/leaflet-lumap
   display: none;
   box-shadow: 0px 0px 10px 5px #0002;
   background: #57ce00;
-  right: 10px;
-  bottom: 10px;
   padding: 0;
   width: 40px;
   height: 40px;
@@ -170,11 +172,31 @@ https://github.com/as-shiddiq/leaflet-lumap
   z-index: 10001;
   color: #fff;
 }
+.lumap-toggle-minimize.bottom-right{
+  right: 10px;
+  bottom: 10px;
+}
+.lumap-toggle-minimize.bottom-left{
+  left: 10px;
+  bottom: 10px;
+}
+.lumap-toggle-minimize.top-left{
+  left: 10px;
+  top: 10px;
+}
+.lumap-toggle-minimize.top-right{
+  right: 10px;
+  top: 10px;
+}
 
 .lumap-mini .lumap-toggle-minimize{
   display: block;
 }
-
+.lumap-formm-check{
+  height: 1rem;
+  width: 1rem;
+  accent-color: #0c68e7;
+}
 /*accoddion*/
 
 .lumap-aside .lumap-aside-checkbox {
